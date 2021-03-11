@@ -1,0 +1,12 @@
+*.bak
+*.tar
+*.tgz
+*.zip
+*~
+
+.DS_Store
+.Trash-1000
+Thumbs.db
+
+db/**
+www/**

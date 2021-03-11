@@ -1,0 +1,60 @@
+version: '3.8'
+networks:
+  wp-network:
+services:
+  wp:
+    image: wordpress:latest
+    container_name: ${WP_NAME}
+    depends_on:
+      - db
+    networks:
+      - wp-network
+    volumes:
+      - ./www:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./wp:/usr/local/bin/wp
+      - ./wp-completion.bash:/root/completion.bash
+    ports:
+      - ${WP_PORT}:80
+    restart: unless-stopped
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_PORT=${DB_PORT}
+      - WORDPRESS_DB_NAME=${DB_DB_NAME}
+      - WORDPRESS_DB_USER=root
+      - WORDPRESS_DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - |
+        WORDPRESS_CONFIG_EXTRA=
+          define('DISABLE_WP_CRON', true);
+          define('FORCE_SSL_ADMIN', false);
+          define('MULTISITE', false);
+          define('PATH_CURRENT_SITE', '/');
+          define('WP_CACHE', true);
+  db:
+    image: mariadb:latest
+    container_name: ${DB_NAME}
+    networks:
+      - wp-network
+    ports:
+      - ${DB_PORT}:3306
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_DB_NAME}
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: ${PMA_NAME}
+    depends_on:
+      - db
+    networks:
+      - wp-network
+    volumes:
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    ports:
+      - ${PMA_PORT}:80
+    restart: unless-stopped
+    environment:
+      - PMA_HOST=db
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
