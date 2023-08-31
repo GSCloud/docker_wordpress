@@ -1,0 +1,40 @@
+# Fred Brooker <git@gscloud.cz>
+
+version: '3.9'
+services:
+  wp:
+    image: wordpress:latest
+    container_name: ${WORDPRESS_CONTAINER_NAME}
+    depends_on:
+      - db
+    volumes:
+      - ./www:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./wp:/usr/local/bin/wp
+      - ./wp-completion.bash:/root/completion.bash
+      - ./bashrc:/root/.bashrc
+    ports:
+      - ${WORDPRESS_PORT}:80
+    restart: unless-stopped
+    environment:
+      - WORDPRESS_DEBUG=true
+      - WORDPRESS_DB_HOST=db
+      - WP_CLI_ALLOW_ROOT=true
+      - WORDPRESS_DB_PORT=${WORDPRESS_DB_PORT}
+      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - WORDPRESS_CONFIG_EXTRA=
+          define('DISABLE_WP_CRON', true);
+          define('FORCE_SSL_ADMIN', false);
+  db:
+    image: mariadb:latest
+    container_name: ${WORDPRESS_DB_CONTAINER_NAME}
+    ports:
+      - ${WORDPRESS_DB_PORT}:3306
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${WORDPRESS_DB_NAME}
