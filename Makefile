@@ -1,5 +1,4 @@
 #@author Fred Brooker <git@gscloud.cz>
-include .env-dist
 -include .env
 
 has_php != command -v php 2>/dev/null
