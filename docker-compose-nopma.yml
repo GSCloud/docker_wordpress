@@ -17,13 +17,13 @@ services:
       - ${WORDPRESS_PORT}:80
     restart: unless-stopped
     environment:
-      - WORDPRESS_DEBUG=true
       - WORDPRESS_DB_HOST=db
-      - WP_CLI_ALLOW_ROOT=true
-      - WORDPRESS_DB_PORT=${WORDPRESS_DB_PORT}
       - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
-      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
       - WORDPRESS_DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - WORDPRESS_DB_PORT=${WORDPRESS_DB_PORT}
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DEBUG=false
+      - WP_CLI_ALLOW_ROOT=true
       - WORDPRESS_CONFIG_EXTRA=
           define('DISABLE_WP_CRON', true);
           define('FORCE_SSL_ADMIN', false);

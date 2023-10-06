@@ -3,7 +3,7 @@
 version: '3.9'
 services:
   wp:
-    image: wordpress:php8.2
+    image: wordpress:php7.4
     container_name: ${WORDPRESS_CONTAINER_NAME}
     depends_on:
       - db
@@ -18,11 +18,12 @@ services:
     restart: unless-stopped
     environment:
       - WORDPRESS_DB_HOST=db
-      - WP_CLI_ALLOW_ROOT=true
-      - WORDPRESS_DB_PORT=${WORDPRESS_DB_PORT}
       - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
-      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
       - WORDPRESS_DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - WORDPRESS_DB_PORT=${WORDPRESS_DB_PORT}
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DEBUG=false
+      - WP_CLI_ALLOW_ROOT=true
       - WORDPRESS_CONFIG_EXTRA=
           define('DISABLE_WP_CRON', true);
           define('FORCE_SSL_ADMIN', false);

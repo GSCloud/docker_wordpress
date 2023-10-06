@@ -1,5 +1,5 @@
 #@author Fred Brooker <git@gscloud.cz>
--include .env
+include .env
 
 has_php != command -v php 2>/dev/null
 wp_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_CONTAINER_NAME} 2>/dev/null | grep true
