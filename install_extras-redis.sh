@@ -3,3 +3,4 @@
 
 make exec run='redis-server --daemonize yes'
 
+exit 0
