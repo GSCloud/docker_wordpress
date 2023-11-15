@@ -229,7 +229,7 @@ ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@echo "closing static site"
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 endif
-	@docker compose up -d
+	@-make install
 	@date
 
 restore: remove

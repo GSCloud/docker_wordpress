@@ -27,6 +27,7 @@ services:
       - WORDPRESS_CONFIG_EXTRA=
           define('DISABLE_WP_CRON', true);
           define('FORCE_SSL_ADMIN', false);
+          define('WP_MEMORY_LIMIT', '512M');
   db:
     image: mariadb:latest
     container_name: ${WORDPRESS_DB_CONTAINER_NAME}
