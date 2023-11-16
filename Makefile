@@ -99,8 +99,11 @@ endif
 
 start:
 	@echo "starting containers..."
-	@docker start ${WORDPRESS_CONTAINER_NAME}
+ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
+	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
+endif
 	@docker start ${WORDPRESS_DB_CONTAINER_NAME}
+	@docker start ${WORDPRESS_CONTAINER_NAME}
 ifneq ($(strip $(PMA_PORT)),)
 	@docker start ${PMA_CONTAINER_NAME}
 endif
