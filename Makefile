@@ -3,9 +3,9 @@ include .env
 
 run ?=
 has_php != command -v php 2>/dev/null
+db_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_DB_CONTAINER_NAME} 2>/dev/null | grep true
 wp_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_CONTAINER_NAME} 2>/dev/null | grep true
 pma_status != docker inspect --format '{{json .State.Running}}' ${PMA_CONTAINER_NAME} 2>/dev/null | grep true
-db_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_DB_CONTAINER_NAME} 2>/dev/null | grep true
 wpdb_status := $(wp_status)$(db_status)
 wpdbok = truetrue
 STATIC_IMAGE_BACKUP ?= gscloudcz/backup-static-site:latest
@@ -30,14 +30,13 @@ else
 pmadot=🔴
 endif
 
-
 all: info
 info:
 	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.1 2023-11-16\n"
-	@echo "\e[0;1m📦️ WP\e[0m container: \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
-	@echo "\e[0;1m📦️ DB\e[0m container: \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
+	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
+	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
-	@echo "\e[0;1m📦️ PMA\e[0m container: \t$(pmadot) \e[0;4m${PMA_CONTAINER_NAME}\e[0m \tport: ${PMA_PORT} \t🚀 http://localhost:${PMA_PORT}"
+	@echo "\e[0;1m📦️ PMA\e[0m \t$(pmadot) \e[0;4m${PMA_CONTAINER_NAME}\e[0m \tport: ${PMA_PORT} \t🚀 http://localhost:${PMA_PORT}"
 endif
 	@echo ""
 ifneq ($(strip $(CMD_EXTRAS)),)
@@ -47,30 +46,30 @@ ifneq ($(strip $(INSTALL_EXTRAS)),)
 	@echo "\e[1;33mINSTALL_EXTRAS\e[0m\e[0;33m is set to run after installation.\e[0m"
 endif
 	@echo ""
-	@echo " - \e[0;1m install\e[0m - install containers and start the app"
+	@echo " - \e[0;1m install\e[0m - install containers"
 	@echo " - \e[0;1m start\e[0m - start containers"
 	@echo " - \e[0;1m stop\e[0m - stop containers"
 	@echo " - \e[0;1m pause\e[0m - pause containers"
 	@echo " - \e[0;1m unpause\e[0m - unpause containers"
 	@echo " - \e[0;1m suspend\e[0m - suspend site (run a static web instead)"
 	@echo " - \e[0;1m unsuspend\e[0m - unsuspend site"
-	@echo " - \e[0;1m kill\e[0m - kill containers"
 	@echo " - \e[0;1m test\e[0m - test containers, force reinstall"
 	@echo " - \e[0;1m fix\e[0m - fix web container permissions"
 	@echo " - \e[0;1m update\e[0m - update themes and plugins via wp binary"
+	@echo " - \e[0;1m kill\e[0m - kill containers"
+	@echo " - \e[0;1m remove\e[0m - remove containers"
 	@echo " - \e[0;1m cronrunall\e[0m - run all cron hooks"
 	@echo " - \e[0;1m cronrundue\e[0m - run all cron hooks due right now"
 	@echo " - \e[0;1m backup\e[0m - backup containers"
 	@echo " - \e[0;1m restore\e[0m - restore containers"
-	@echo " - \e[0;1m remove\e[0m - remove containers"
-	@echo " - \e[0;1m debug\e[0m - install, run backend in the foreground"
-	@echo " - \e[0;1m exec\e[0m - run shell inside WordPress container"
-	@echo " - \e[0;1m exec run='<command>'\e[0m - run <command> inside WordPress container"
+	@echo " - \e[0;1m exec\e[0m - run shell inside WP container"
+	@echo " - \e[0;1m exec run='<command>'\e[0m - run <command> inside WP container"
+	@echo " - \e[0;1m debug\e[0m - install and run WP in the foreground"
 	@echo " - \e[0;1m config\e[0m - display Docker compose configuration"
-	@echo " - \e[0;1m jsoncontrol\e[0m - display a set of make control commands in JSON format"
+	@echo " - \e[0;1m jsoncontrol\e[0m - display a set of control commands in JSON"
 	@echo " - \e[0;1m logs\e[0m - display logs"
 	@echo " - \e[0;1m purge\e[0m - delete persistent data ❗️"
-	@echo " - \e[0;1m docs\e[0m - build documentation into PDF format"
+	@echo " - \e[0;1m docs\e[0m - transpile documentation into PDF"
 	@echo ""
 
 jsoncontrol:
@@ -82,7 +81,7 @@ else
 endif
 
 docs:
-	@echo "🔨 \e[1;32m Building documentation\e[0m"
+	@echo "building documentation ..."
 	@bash ./bin/create_pdf.sh
 
 debug:
@@ -108,7 +107,7 @@ endif
 	@echo ""
 
 start:
-	@echo "starting containers..."
+	@echo "starting containers ..."
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 endif
@@ -129,6 +128,7 @@ ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 endif
 
 kill:
+	@echo "😵"
 	@docker compose kill
 
 pause:
@@ -140,7 +140,7 @@ unpause:
 	@docker compose unpause
 
 remove:
-	@echo "removing containers..."
+	@echo "removing containers ..."
 	@docker compose stop
 	@-docker rm ${WORDPRESS_CONTAINER_NAME} --force 2>/dev/null
 	@-docker rm ${WORDPRESS_DB_CONTAINER_NAME} --force 2>/dev/null
@@ -269,7 +269,7 @@ ifneq ($(shell id -u),0)
 endif
 	@sudo rm -rf db www
 ifneq ($(wildcard ./bak/.),)
-	@echo "🎒 backup location: bak"
+	@echo "backup location: bak"
 ifneq ($(wildcard bak/db.tgz),)
 	@-sudo tar xzf bak/db.tgz 2>/dev/null
 else
@@ -283,7 +283,7 @@ else
 	exit 1
 endif
 else
-	@echo "🎒 backup location: ."
+	@echo "backup location: ."
 ifneq ($(wildcard db.tgz),)
 	@-sudo tar xzf db.tgz 2>/dev/null
 else
@@ -324,12 +324,12 @@ ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 endif
 ifneq ($(strip $(wp_status)),)
-	@echo "🟢 WP is up and running or paused"
+	@echo "🟢 WP is up and running / paused"
 else
 	@echo "🔴 WP is down"
 endif
 ifneq ($(strip $(db_status)),)
-	@echo "🟢 DB is up and running or paused"
+	@echo "🟢 DB is up and running / paused"
 else
 	@echo "🔴 DB is down"
 endif
