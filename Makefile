@@ -88,6 +88,8 @@ debug:
 	@docker compose up
 
 install:
+	@echo "installing containers ..."
+	@date
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 endif
@@ -104,6 +106,7 @@ endif
 ifneq ($(strip $(PMA_PORT)),)
 	@echo "\e[0;1m📦️ PMA\e[0m: 🚀 http://localhost:${PMA_PORT}"
 endif
+	@date
 	@echo ""
 
 start:
@@ -118,6 +121,7 @@ ifneq ($(strip $(PMA_PORT)),)
 endif
 
 stop:
+	@echo "stopping containers ..."
 	@-docker stop ${WORDPRESS_CONTAINER_NAME}
 	@-docker stop ${WORDPRESS_DB_CONTAINER_NAME}
 ifneq ($(strip $(PMA_PORT)),)
