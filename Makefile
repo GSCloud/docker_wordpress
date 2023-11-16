@@ -98,6 +98,7 @@ endif
 	@echo ""
 
 start:
+	@echo "starting containers..."
 	@docker start ${WORDPRESS_CONTAINER_NAME}
 	@docker start ${WORDPRESS_DB_CONTAINER_NAME}
 ifneq ($(strip $(PMA_PORT)),)
@@ -126,6 +127,7 @@ unpause:
 	@docker compose unpause
 
 remove:
+	@echo "removing containers..."
 	@docker compose stop
 	@-docker rm ${WORDPRESS_CONTAINER_NAME} --force 2>/dev/null
 	@-docker rm ${WORDPRESS_DB_CONTAINER_NAME} --force 2>/dev/null
@@ -199,6 +201,10 @@ logs:
 	@docker logs -f ${WORDPRESS_CONTAINER_NAME}
 
 backup: start
+ifneq ($(shell id -u),0)
+	@echo "root permission required"
+	@sudo echo ""
+endif
 	@date
 	@rm -rf bak
 	@mkdir bak
@@ -233,6 +239,10 @@ endif
 	@date
 
 restore: remove
+ifneq ($(shell id -u),0)
+	@echo "root permission required"
+	@sudo echo ""
+endif
 	@date
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@echo "running static site"
