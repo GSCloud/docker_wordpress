@@ -9,10 +9,10 @@ Alternative docker-compose examples and other demo files enclosed.
 
 ## Extras
 
-- can run `cmd_extras.sh` after the installation inside the WP container (adding extra modules?),
-- can run `install_extras.sh` after the installation outside (starting daemons?),
-- available **temporary static web** (optional) containers during *suspend*, *backup* and *restore* operations (for users or monitoring services),
-- available **wp** binary with **shell completion**, **bash aliases** and some *PHP ini setup* available.
+- can run `cmd_extras.sh` after the installation inside the WP container (adding extra modules?)
+- can run `install_extras.sh` after the installation outside (starting daemons?)
+- available **temporary static web** (optional) containers during *suspend*, *backup* and *restore* operations (for users or monitoring services)
+- available **wp** binary with **shell completion**, **bash aliases** and some *PHP ini setup*
 
 ## Usage
 
