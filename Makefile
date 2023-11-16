@@ -30,14 +30,18 @@ endif
 
 all: info
 info:
-	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.0 2023.08.31\n"
+	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.1 2023.11.16\n"
 	@echo "\e[0;1m📦️ WP\e[0m container: \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "\e[0;1m📦️ DB\e[0m container: \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
 	@echo "\e[0;1m📦️ PMA\e[0m container: \t$(pmadot) \e[0;4m${PMA_CONTAINER_NAME}\e[0m \tport: ${PMA_PORT} \t🚀 http://localhost:${PMA_PORT}"
 endif
+	@echo ""
 ifneq ($(strip $(CMD_EXTRAS)),)
-	@echo "\n\e[1;33mCMD_EXTRAS\e[0m\e[0;33m is set to run after installation.\e[0m"
+	@echo "\e[1;33mCMD_EXTRAS\e[0m\e[0;33m is set to run after installation.\e[0m"
+endif
+ifneq ($(strip $(INSTALL_EXTRAS)),)
+	@echo "\e[1;33mINSTALL_EXTRAS\e[0m\e[0;33m is set to run after installation.\e[0m"
 endif
 	@echo ""
 	@echo " - \e[0;1m install\e[0m - install containers and start the app"
@@ -90,6 +94,9 @@ ifneq ($(strip $(CMD_EXTRAS)),)
 	@docker cp ./cmd_extras.sh ${WORDPRESS_CONTAINER_NAME}:/
 	@docker exec ${WORDPRESS_CONTAINER_NAME} /cmd_extras.sh
 	@docker restart ${WORDPRESS_CONTAINER_NAME}
+endif
+ifneq ($(strip $(INSTALL_EXTRAS)),)
+	@bash ./install_extras.sh
 endif
 	@echo "\n\e[0;1m📦️ WP\e[0m: 🚀 http://localhost:${WORDPRESS_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
@@ -234,6 +241,9 @@ endif
 ifneq ($(strip $(CMD_EXTRAS)),)
 	@cp cmd_extras.sh bak/
 endif
+ifneq ($(strip $(INSTALL_EXTRAS)),)
+	@cp install_extras.sh bak/
+endif
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@echo "closing static site"
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
@@ -286,6 +296,9 @@ endif
 endif
 ifneq ($(strip $(CMD_EXTRAS)),)
 	@cp bak/cmd_extras.sh . 2>/dev/null
+endif
+ifneq ($(strip $(INSTALL_EXTRAS)),)
+	@cp bak/install_extras.sh . 2>/dev/null
 endif
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@echo "closing static site"
