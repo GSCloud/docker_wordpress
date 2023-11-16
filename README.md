@@ -3,8 +3,13 @@
 demo [https://wodpress-in-docker.mxd.cz]  
 repo [https://github.com/GSCloud/docker_wordpress]
 
-Run WordPress, MariaDB and phpMyAdmin in Docker containers using a Makefile and .env configuration file.  
-(an alternative docker-compose without phpMyAdmin is available)
+Run WordPress, MariaDB and phpMyAdmin in Docker containers using only a **Makefile**, **.env** configuration file and **docker-compose.yml** (alternative docker-compose examples are available).
+
+`cmd_extras.sh` can be run after the installation inside the WP container (like adding extra modules), `install_extras.sh` can be run after the installation outside (like starting daemons).
+
+You can run optional static web during suspend, backup and restore operations.
+
+There's also **wp** binary support with shell completion and some bash aliases.
 
 ## Usage
 
