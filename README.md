@@ -7,9 +7,9 @@ Run WordPress, MariaDB and phpMyAdmin in Docker containers using only a **Makefi
 
 `cmd_extras.sh` can be run after the installation inside the WP container (like adding extra modules), `install_extras.sh` can be run after the installation outside (like starting daemons).
 
-You can run optional static web during suspend, backup and restore operations.
+You can run optional static web during *suspend*, *backup* and *restore* operations.
 
-There's also **wp** binary support with shell completion and some bash aliases.
+There's also **wp** binary support with shell completion, basic bash aliases, PHP ini setup.
 
 ## Usage
 
