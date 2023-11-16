@@ -1,13 +1,16 @@
 #@author Fred Brooker <git@gscloud.cz>
 include .env
 
+run ?=
 has_php != command -v php 2>/dev/null
 wp_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_CONTAINER_NAME} 2>/dev/null | grep true
 pma_status != docker inspect --format '{{json .State.Running}}' ${PMA_CONTAINER_NAME} 2>/dev/null | grep true
 db_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_DB_CONTAINER_NAME} 2>/dev/null | grep true
 wpdb_status := $(wp_status)$(db_status)
 wpdbok = truetrue
-run ?=
+STATIC_IMAGE_BACKUP ?= gscloudcz/backup-static-site:latest
+STATIC_IMAGE_RESTORE ?= gscloudcz/restore-static-site:latest
+STATIC_IMAGE_SUSPEND ?= gscloudcz/suspend-static-site:latest
 
 ifneq ($(strip $(wp_status)),)
 wpdot=🟢
@@ -152,7 +155,7 @@ suspend: remove
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 	@echo "⛔️ running suspend site"
-	@docker run -d --rm -p ${WORDPRESS_PORT}:3000 --name ${WORDPRESS_CONTAINER_NAME}_suspended gscloudcz/suspend-static-site:latest
+	@docker run -d --rm -p ${WORDPRESS_PORT}:3000 --name ${WORDPRESS_CONTAINER_NAME}_suspended ${STATIC_IMAGE_SUSPEND}
 else
 	@echo "ℹ️ static sites are disabled in .env"
 endif
@@ -227,7 +230,7 @@ ifneq ($(strip $(PMA_PORT)),)
 endif
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@echo "running static site"
-	@-docker run -d --rm -p ${WORDPRESS_PORT}:3000 --name ${WORDPRESS_CONTAINER_NAME}_static gscloudcz/backup-static-site:latest
+	@-docker run -d --rm -p ${WORDPRESS_PORT}:3000 --name ${WORDPRESS_CONTAINER_NAME}_static ${STATIC_IMAGE_BACKUP}
 endif
 ifneq ($(shell id -u),0)
 	@echo "root permission required"
@@ -259,7 +262,7 @@ endif
 	@date
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@echo "running static site"
-	@-docker run -d --rm -p ${WORDPRESS_PORT}:3000 --name ${WORDPRESS_CONTAINER_NAME}_static gscloudcz/restore-static-site:latest
+	@-docker run -d --rm -p ${WORDPRESS_PORT}:3000 --name ${WORDPRESS_CONTAINER_NAME}_static ${STATIC_IMAGE_RESTORE}
 endif
 ifneq ($(shell id -u),0)
 	@echo "root permission required"
