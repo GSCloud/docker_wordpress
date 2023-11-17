@@ -1,7 +1,9 @@
-# WordPress in Docker
+# WordPress in Docker and MariaDB
 
-demo [https://wodpress-in-docker.mxd.cz]  
-repo [https://github.com/GSCloud/docker_wordpress]
+## WordPress is an open source web content management system
+
+demo: [https://wodpress-in-docker.mxd.cz](https://wodpress-in-docker.mxd.cz)  
+GitHub repository: [https://github.com/GSCloud/docker_wordpress](https://github.com/GSCloud/docker_wordpress)
 
 Run WordPress, MariaDB and phpMyAdmin (optional) as Docker containers using only: **Makefile**, **.env** and **docker-compose.yml**.
 
@@ -48,7 +50,9 @@ Run `make`:
 - `make purge install` - purge everything and fresh install
 - `make backup test` - make backup and test functionality
 - `make purge restore` - purge everything and restore from backup
+- `make logs` - show logs from the main container
+- `make test` - test containers (reinstall if it failes)
 
 ---
 
-Author: Fred Brooker 💌 <git@gscloud.cz> ⛅️ GS Cloud Ltd. [https://gscloud.cz]
+Author: Fred Brooker 💌 <git@gscloud.cz> ⛅️ GS Cloud Ltd. [https://gscloud.cz](https://gscloud.cz)
