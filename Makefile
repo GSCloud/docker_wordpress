@@ -32,7 +32,7 @@ endif
 
 all: info
 info:
-	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.1 2023-11-16\n"
+	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.2 2023-11-18\n"
 	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
@@ -72,6 +72,10 @@ endif
 	@echo " - \e[0;1m docs\e[0m - transpile documentation into PDF"
 	@echo ""
 
+docs:
+	@echo "transpiling documentation ..."
+	@bash ./bin/create_pdf.sh
+
 jsoncontrol:
 ifneq ($(strip $(has_php)),)
 	@php -r 'echo json_encode(["control_set" => ["backup", "config", "cronrunall", "cronrundue", "debug", "exec", "fix", "install", "kill", "logs", "pause", "purge", "remove", "restore", "start", "stop", "suspend", "test", "unpause", "unsuspend", "update"]], JSON_PRETTY_PRINT);'
@@ -79,10 +83,6 @@ else
 	@echo "❗️ php parser is not installed"
 	@exit 99
 endif
-
-docs:
-	@echo "building documentation ..."
-	@bash ./bin/create_pdf.sh
 
 debug:
 	@docker compose up
@@ -95,11 +95,13 @@ ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 endif
 	@docker compose up -d
 ifneq ($(strip $(CMD_EXTRAS)),)
-	@docker cp ./cmd_extras.sh ${WORDPRESS_CONTAINER_NAME}:/
-	@docker exec ${WORDPRESS_CONTAINER_NAME} /cmd_extras.sh
-	@docker restart ${WORDPRESS_CONTAINER_NAME}
+	@-docker cp ./cmd_extras.sh ${WORDPRESS_CONTAINER_NAME}:/
+	@-docker exec ${WORDPRESS_CONTAINER_NAME} /cmd_extras.sh
+	@-docker restart ${WORDPRESS_CONTAINER_NAME}
 endif
 ifneq ($(strip $(INSTALL_EXTRAS)),)
+	@echo "sleeping... 5 s"
+	@sleep 5
 	@bash ./install_extras.sh
 endif
 	@echo "\n\e[0;1m📦️ WP\e[0m: 🚀 http://localhost:${WORDPRESS_PORT}"
