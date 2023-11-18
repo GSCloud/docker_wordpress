@@ -190,6 +190,7 @@ ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
 	@sudo rm -f www/.maintenance
+	@sudo chown -R www-data:www-data www/wp-admin
 	@sudo chown -R www-data:www-data www/wp-content
 	@sudo chown -R www-data:www-data www/wp-includes
 	@echo "content permissions fixed"
@@ -199,6 +200,7 @@ ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
 	@sudo rm -f www/.maintenance
+	@sudo chown -R www-data:www-data www/wp-admin
 	@sudo chown -R www-data:www-data www/wp-content
 	@sudo chown -R www-data:www-data www/wp-includes
 	@echo "content permissions fixed"
