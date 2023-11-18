@@ -100,8 +100,8 @@ ifneq ($(strip $(CMD_EXTRAS)),)
 	@-docker restart ${WORDPRESS_CONTAINER_NAME}
 endif
 ifneq ($(strip $(INSTALL_EXTRAS)),)
-	@echo "sleeping... 5 s"
-	@sleep 5
+	@echo "sleeping... 3 s"
+	@sleep 3
 	@bash ./install_extras.sh
 endif
 	@echo "\n\e[0;1m📦️ WP\e[0m: 🚀 http://localhost:${WORDPRESS_PORT}"
