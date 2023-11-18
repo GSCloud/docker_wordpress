@@ -191,6 +191,7 @@ ifneq ($(shell id -u),0)
 endif
 	@sudo rm -f www/.maintenance
 	@sudo chown -R www-data:www-data www/wp-content
+	@sudo chown -R www-data:www-data www/wp-includes
 	@echo "content permissions fixed"
 
 update:
@@ -199,6 +200,7 @@ ifneq ($(shell id -u),0)
 endif
 	@sudo rm -f www/.maintenance
 	@sudo chown -R www-data:www-data www/wp-content
+	@sudo chown -R www-data:www-data www/wp-includes
 	@echo "content permissions fixed"
 	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp plugin update --all
 	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp theme update --all
