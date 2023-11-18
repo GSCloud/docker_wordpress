@@ -180,7 +180,7 @@ config:
 
 exec:
 ifneq ($(strip $(run)),)
-	@docker exec -it ${WORDPRESS_CONTAINER_NAME} $(run)
+	@docker exec ${WORDPRESS_CONTAINER_NAME} $(run)
 else
 	@docker exec -it ${WORDPRESS_CONTAINER_NAME} bash
 endif
@@ -200,20 +200,20 @@ endif
 	@sudo rm -f www/.maintenance
 	@sudo chown -R www-data:www-data www/wp-content
 	@echo "content permissions fixed"
-	@-docker exec -it ${WORDPRESS_CONTAINER_NAME} wp plugin update --all
-	@-docker exec -it ${WORDPRESS_CONTAINER_NAME} wp theme update --all
+	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp plugin update --all
+	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp theme update --all
 	@sudo chown -R www-data:www-data www/wp-content
 	@sudo rm -f www/.maintenance
 	@echo "content permissions fixed"
 
 cronrundue:
 	@sudo rm -f www/.maintenance
-	@-docker exec -it ${WORDPRESS_CONTAINER_NAME} wp cron event run --due-now
+	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp cron event run --due-now
 	@sudo rm -f www/.maintenance
 
 cronrunall:
 	@sudo rm -f www/.maintenance
-	@-docker exec -it ${WORDPRESS_CONTAINER_NAME} wp cron event run --all
+	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp cron event run --all
 	@sudo rm -f www/.maintenance
 
 logs:
