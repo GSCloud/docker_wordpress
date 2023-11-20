@@ -27,7 +27,6 @@ services:
           define('DISABLE_WP_CRON', true);
           define('DISALLOW_FILE_EDIT', true);
           define('FORCE_SSL_ADMIN', false);
-          define('WP_DEBUG', false);
           define('WP_MEMORY_LIMIT', '128M');
   db:
     image: mariadb:latest
