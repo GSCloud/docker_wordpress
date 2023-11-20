@@ -3,7 +3,7 @@
 version: '3.9'
 services:
   wp:
-    image: wordpress:php7.4
+    image: wordpress:latest
     container_name: ${WORDPRESS_CONTAINER_NAME}
     depends_on:
       - db
@@ -27,7 +27,7 @@ services:
           define('DISABLE_WP_CRON', true);
           define('FORCE_SSL_ADMIN', false);
           define('WP_DEBUG', false);
-          define('WP_MEMORY_LIMIT', '512M');
+          define('WP_MEMORY_LIMIT', '128M');
   db:
     image: mariadb:latest
     container_name: ${WORDPRESS_DB_CONTAINER_NAME}

@@ -22,11 +22,11 @@ services:
       - WORDPRESS_DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - WORDPRESS_DB_PORT=${WORDPRESS_DB_PORT}
       - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
-      - WORDPRESS_DEBUG=false
       - WP_CLI_ALLOW_ROOT=true
       - WORDPRESS_CONFIG_EXTRA=
           define('DISABLE_WP_CRON', true);
           define('FORCE_SSL_ADMIN', false);
+          define('WP_DEBUG', false);
           define('WP_MEMORY_LIMIT', '512M');
   db:
     image: mariadb:latest
