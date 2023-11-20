@@ -32,7 +32,7 @@ endif
 
 all: info
 info:
-	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.2 2023-11-18\n"
+	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.3 2023-11-20\n"
 	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
