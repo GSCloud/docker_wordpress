@@ -193,6 +193,7 @@ endif
 	@sudo chown -R www-data:www-data www/wp-admin
 	@sudo chown -R www-data:www-data www/wp-content
 	@sudo chown -R www-data:www-data www/wp-includes
+	@sudo chmod 0775 www/wp-content/uploads
 	@echo "content permissions fixed"
 
 update:
@@ -203,6 +204,7 @@ endif
 	@sudo chown -R www-data:www-data www/wp-admin
 	@sudo chown -R www-data:www-data www/wp-content
 	@sudo chown -R www-data:www-data www/wp-includes
+	@sudo chmod 0775 www/wp-content/uploads
 	@echo "content permissions fixed"
 	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp plugin update --all
 	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp theme update --all
