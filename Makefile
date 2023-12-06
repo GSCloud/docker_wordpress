@@ -2,15 +2,15 @@
 include .env
 
 run ?=
+STATIC_IMAGE_BACKUP ?= gscloudcz/backup-static-site:latest
+STATIC_IMAGE_RESTORE ?= gscloudcz/restore-static-site:latest
+STATIC_IMAGE_SUSPEND ?= gscloudcz/suspend-static-site:latest
 has_php != command -v php 2>/dev/null
 db_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_DB_CONTAINER_NAME} 2>/dev/null | grep true
 wp_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_CONTAINER_NAME} 2>/dev/null | grep true
 pma_status != docker inspect --format '{{json .State.Running}}' ${PMA_CONTAINER_NAME} 2>/dev/null | grep true
 wpdb_status := $(wp_status)$(db_status)
 wpdbok = truetrue
-STATIC_IMAGE_BACKUP ?= gscloudcz/backup-static-site:latest
-STATIC_IMAGE_RESTORE ?= gscloudcz/restore-static-site:latest
-STATIC_IMAGE_SUSPEND ?= gscloudcz/suspend-static-site:latest
 
 ifneq ($(strip $(wp_status)),)
 wpdot=🟢
@@ -32,7 +32,7 @@ endif
 
 all: info
 info:
-	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.3 2023-11-20\n"
+	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.4 2023-12-06\n"
 	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
@@ -88,8 +88,8 @@ debug:
 	@docker compose up
 
 install:
-	@echo "installing containers ..."
 	@date
+	@echo "installing containers ..."
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 endif
@@ -138,11 +138,11 @@ kill:
 	@docker compose kill
 
 pause:
-	@echo "⏯️"
+	@echo "⏸️"
 	@docker compose pause
 
 unpause:
-	@echo "⏯️"
+	@echo "▶️"
 	@docker compose unpause
 
 remove:
@@ -329,19 +329,19 @@ purge: remove
 ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
-	sudo rm -rf db/ www/
+	sudo rm -rf db www
 
 test:
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 endif
 ifneq ($(strip $(wp_status)),)
-	@echo "🟢 WP is up and running / paused"
+	@echo "🟢 WP is up and running or paused"
 else
 	@echo "🔴 WP is down"
 endif
 ifneq ($(strip $(db_status)),)
-	@echo "🟢 DB is up and running / paused"
+	@echo "🟢 DB is up and running or paused"
 else
 	@echo "🔴 DB is down"
 endif
