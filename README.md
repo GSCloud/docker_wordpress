@@ -2,8 +2,8 @@
 
 ## WordPress is an open source web content management system
 
-demo: [https://wodpress-in-docker.mxd.cz](https://wodpress-in-docker.mxd.cz)  
-GitHub repository: [https://github.com/GSCloud/docker_wordpress](https://github.com/GSCloud/docker_wordpress)
+WordPress in Docker demo: [https://wodpress-in-docker.mxd.cz](https://wodpress-in-docker.mxd.cz)  
+WordPress in Docker repository: [https://github.com/GSCloud/docker_wordpress](https://github.com/GSCloud/docker_wordpress)
 
 Run WordPress, MariaDB and phpMyAdmin (optional) as Docker containers using only: **Makefile**, **.env** and **docker-compose.yml**.
 
