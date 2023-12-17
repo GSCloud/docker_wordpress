@@ -67,6 +67,8 @@ endif
 	@echo " - \e[0;1m debug\e[0m - install and run WP in the foreground"
 	@echo " - \e[0;1m config\e[0m - display Docker compose configuration"
 	@echo " - \e[0;1m jsoncontrol\e[0m - display a set of control commands in JSON"
+	@echo " - \e[0;1m lock\e[0m - lock installation for writing"
+	@echo " - \e[0;1m unlock\e[0m - unlock installation for writing"
 	@echo " - \e[0;1m logs\e[0m - display logs"
 	@echo " - \e[0;1m purge\e[0m - delete persistent data ❗️"
 	@echo " - \e[0;1m docs\e[0m - transpile documentation into PDF"
@@ -78,7 +80,7 @@ docs:
 
 jsoncontrol:
 ifneq ($(strip $(has_php)),)
-	@php -r 'echo json_encode(["control_set" => ["backup", "config", "cronrunall", "cronrundue", "debug", "exec", "fix", "install", "kill", "logs", "pause", "purge", "remove", "restore", "start", "stop", "suspend", "test", "unpause", "unsuspend", "update"]], JSON_PRETTY_PRINT);'
+	@php -r 'echo json_encode(["control_set" => ["backup", "config", "cronrunall", "cronrundue", "debug", "exec", "fix", "install", "kill", "lock", "logs", "pause", "purge", "remove", "restore", "start", "stop", "suspend", "test", "unlock", "unpause", "unsuspend", "update"]], JSON_PRETTY_PRINT);'
 else
 	@echo "❗️ php parser is not installed"
 	@exit 99
@@ -195,6 +197,22 @@ endif
 	@sudo chown -R www-data:www-data www/wp-includes
 	@sudo chmod 0775 www/wp-content/uploads
 	@echo "content permissions fixed"
+
+lock:
+ifneq ($(shell id -u),0)
+	@echo "root permission required"
+endif
+	@echo "WordPress lock ..."
+	@sudo find www/ -type d -print -exec chmod 555 {} \;
+	@sudo find www/ -type f -print -exec chmod 444 {} \;
+
+unlock:
+ifneq ($(shell id -u),0)
+	@echo "root permission required"
+endif
+	@echo "WordPress unlock ..."
+	@sudo find www/ -type d -print -exec chmod 755 {} \;
+	@sudo find www/ -type f -print -exec chmod 644 {} \;
 
 update:
 ifneq ($(shell id -u),0)
