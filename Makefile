@@ -89,12 +89,9 @@ endif
 debug:
 	@docker compose up
 
-install:
+install: remove
 	@date
 	@echo "installing containers ..."
-ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
-	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
-endif
 	@docker compose up -d
 ifneq ($(strip $(CMD_EXTRAS)),)
 	@-docker cp ./cmd_extras.sh ${WORDPRESS_CONTAINER_NAME}:/
@@ -102,7 +99,7 @@ ifneq ($(strip $(CMD_EXTRAS)),)
 	@-docker restart ${WORDPRESS_CONTAINER_NAME}
 endif
 ifneq ($(strip $(INSTALL_EXTRAS)),)
-	@echo "sleeping... 3 s"
+	@echo "sleeping 3 s ..."
 	@sleep 3
 	@bash ./install_extras.sh
 endif
@@ -148,7 +145,7 @@ unpause:
 	@docker compose unpause
 
 remove:
-	@echo "removing containers ..."
+	@echo "removing all containers ..."
 	@docker compose stop
 	@-docker rm ${WORDPRESS_CONTAINER_NAME} --force 2>/dev/null
 	@-docker rm ${WORDPRESS_DB_CONTAINER_NAME} --force 2>/dev/null
@@ -192,10 +189,11 @@ ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
 	@sudo rm -f www/.maintenance
-	@sudo chown -R www-data:www-data www/wp-admin
-	@sudo chown -R www-data:www-data www/wp-content
-	@sudo chown -R www-data:www-data www/wp-includes
-	@sudo chmod 0775 www/wp-content/uploads
+	@-sudo chown -R www-data:www-data www/.htaccess www/*.html www/*.php
+	@-sudo chown -R www-data:www-data www/wp-admin
+	@-sudo chown -R www-data:www-data www/wp-content
+	@-sudo chown -R www-data:www-data www/wp-includes
+	@-sudo chmod 0775 www/wp-content/uploads 2>/dev/null
 	@echo "content permissions fixed"
 
 lock:
@@ -219,14 +217,19 @@ ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
 	@sudo rm -f www/.maintenance
-	@sudo chown -R www-data:www-data www/wp-admin
-	@sudo chown -R www-data:www-data www/wp-content
-	@sudo chown -R www-data:www-data www/wp-includes
-	@sudo chmod 0775 www/wp-content/uploads
+	@-sudo chown -R www-data:www-data www/.htaccess www/*.html www/*.php
+	@-sudo chown -R www-data:www-data www/wp-admin
+	@-sudo chown -R www-data:www-data www/wp-content
+	@-sudo chown -R www-data:www-data www/wp-includes
+	@-sudo chmod 0775 www/wp-content/uploads 2>/dev/null
 	@echo "content permissions fixed"
 	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp plugin update --all
 	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp theme update --all
-	@sudo chown -R www-data:www-data www/wp-content
+	@-sudo chown -R www-data:www-data www/.htaccess www/*.html www/*.php
+	@-sudo chown -R www-data:www-data www/wp-admin
+	@-sudo chown -R www-data:www-data www/wp-content
+	@-sudo chown -R www-data:www-data www/wp-includes
+	@-sudo chmod 0775 www/wp-content/uploads 2>/dev/null
 	@sudo rm -f www/.maintenance
 	@echo "content permissions fixed"
 

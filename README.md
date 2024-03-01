@@ -1,4 +1,4 @@
-# WordPress in Docker and MariaDB v1.4 2023-12-06
+# WordPress in Docker and MariaDB v1.5 2024-03-01
 
 ## WordPress is an open source web content management system
 
@@ -41,6 +41,8 @@ Run `make`:
 - debug - install and run WP in the foreground
 - config - display Docker compose configuration
 - jsoncontrol - display a set of control commands in JSON
+- lock - lock installation for writing
+- unlock - unlock installation for writing
 - logs - display logs
 - purge - delete persistent data ❗️
 - docs - transpile documentation into PDF
