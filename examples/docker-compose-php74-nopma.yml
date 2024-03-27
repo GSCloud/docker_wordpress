@@ -1,6 +1,5 @@
 # Fred Brooker <git@gscloud.cz>
 
-version: '3.9'
 services:
   wp:
     image: wordpress:php7.4

@@ -1,4 +1,4 @@
-# WordPress in Docker and MariaDB v1.5 2024-03-01
+# WordPress in Docker and MariaDB v1.6 2024-03-27
 
 ## WordPress is an open source web content management system
 
