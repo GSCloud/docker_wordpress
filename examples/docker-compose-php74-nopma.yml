@@ -23,7 +23,7 @@ services:
       - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
       - WP_CLI_ALLOW_ROOT=true
       - WORDPRESS_CONFIG_EXTRA=
-          define('DISABLE_WP_CRON', true);
+          define('DISABLE_WP_CRON', false);
           define('DISALLOW_FILE_EDIT', true);
           define('FORCE_SSL_ADMIN', false);
           define('WP_MEMORY_LIMIT', '512M');
