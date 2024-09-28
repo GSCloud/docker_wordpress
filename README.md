@@ -1,11 +1,8 @@
-# WordPress in Docker and MariaDB v1.6 2024-03-27
+# WP in Docker and MariaDB v1.7 2024-09-28
 
-## WordPress is an open source web content management system
+## WP is an open source web content management system
 
-WordPress in Docker demo: [https://wodpress-in-docker.mxd.cz](https://wodpress-in-docker.mxd.cz)  
-WordPress in Docker repository: [https://github.com/GSCloud/docker_wordpress](https://github.com/GSCloud/docker_wordpress)
-
-Run WordPress, MariaDB and phpMyAdmin (optional) as Docker containers using only: **Makefile**, **.env** and **docker-compose.yml**.
+Run WP, MariaDB and phpMyAdmin (optional) as Docker containers using only: **Makefile**, **.env** and **docker-compose.yml**.
 
 Alternative docker-compose examples and other demo files enclosed.
 

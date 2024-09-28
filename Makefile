@@ -32,13 +32,12 @@ endif
 
 all: info
 info:
-	@echo "\n\e[1;32mWordPress in Docker 👾\e[0m v1.4 2023-12-06\n"
+	@echo "\n\e[1;32mWP in Docker 👾\e[0m v1.7 2024-09-28\n"
 	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
 	@echo "\e[0;1m📦️ PMA\e[0m \t$(pmadot) \e[0;4m${PMA_CONTAINER_NAME}\e[0m \tport: ${PMA_PORT} \t🚀 http://localhost:${PMA_PORT}"
 endif
-	@echo ""
 ifneq ($(strip $(CMD_EXTRAS)),)
 	@echo "\e[1;33mCMD_EXTRAS\e[0m\e[0;33m is set to run after installation.\e[0m"
 endif
@@ -46,32 +45,32 @@ ifneq ($(strip $(INSTALL_EXTRAS)),)
 	@echo "\e[1;33mINSTALL_EXTRAS\e[0m\e[0;33m is set to run after installation.\e[0m"
 endif
 	@echo ""
-	@echo " - \e[0;1m install\e[0m - install containers"
-	@echo " - \e[0;1m start\e[0m - start containers"
-	@echo " - \e[0;1m stop\e[0m - stop containers"
-	@echo " - \e[0;1m pause\e[0m - pause containers"
-	@echo " - \e[0;1m unpause\e[0m - unpause containers"
-	@echo " - \e[0;1m suspend\e[0m - suspend site (run a static web instead)"
-	@echo " - \e[0;1m unsuspend\e[0m - unsuspend site"
-	@echo " - \e[0;1m test\e[0m - test containers, force reinstall"
-	@echo " - \e[0;1m fix\e[0m - fix web container permissions"
-	@echo " - \e[0;1m update\e[0m - update themes and plugins via wp binary"
-	@echo " - \e[0;1m kill\e[0m - kill containers"
-	@echo " - \e[0;1m remove\e[0m - remove containers"
-	@echo " - \e[0;1m cronrunall\e[0m - run all cron hooks"
-	@echo " - \e[0;1m cronrundue\e[0m - run all cron hooks due right now"
-	@echo " - \e[0;1m backup\e[0m - backup containers"
-	@echo " - \e[0;1m restore\e[0m - restore containers"
-	@echo " - \e[0;1m exec\e[0m - run shell inside WP container"
-	@echo " - \e[0;1m exec run='<command>'\e[0m - run <command> inside WP container"
-	@echo " - \e[0;1m debug\e[0m - install and run WP in the foreground"
-	@echo " - \e[0;1m config\e[0m - display Docker compose configuration"
-	@echo " - \e[0;1m jsoncontrol\e[0m - display a set of control commands in JSON"
-	@echo " - \e[0;1m lock\e[0m - lock installation for writing"
-	@echo " - \e[0;1m unlock\e[0m - unlock installation for writing"
-	@echo " - \e[0;1m logs\e[0m - display logs"
-	@echo " - \e[0;1m purge\e[0m - delete persistent data ❗️"
-	@echo " - \e[0;1m docs\e[0m - transpile documentation into PDF"
+	@echo "- \e[0;1m install\e[0m - install containers"
+	@echo "- \e[0;1m start\e[0m - start containers"
+	@echo "- \e[0;1m stop\e[0m - stop containers"
+	@echo "- \e[0;1m pause\e[0m - pause containers"
+	@echo "- \e[0;1m unpause\e[0m - unpause containers"
+	@echo "- \e[0;1m suspend\e[0m - suspend site (run a static web instead)"
+	@echo "- \e[0;1m unsuspend\e[0m - unsuspend site"
+	@echo "- \e[0;1m test\e[0m - test containers, force reinstall"
+	@echo "- \e[0;1m fix\e[0m - fix web container permissions"
+	@echo "- \e[0;1m update\e[0m - update themes and plugins via wp binary"
+	@echo "- \e[0;1m kill\e[0m - kill containers"
+	@echo "- \e[0;1m remove\e[0m - remove containers"
+	@echo "- \e[0;1m cronrunall\e[0m - run all cron hooks"
+	@echo "- \e[0;1m cronrundue\e[0m - run all cron hooks due right now"
+	@echo "- \e[0;1m backup\e[0m - backup containers"
+	@echo "- \e[0;1m restore\e[0m - restore containers"
+	@echo "- \e[0;1m exec\e[0m - run shell inside WP container"
+	@echo "- \e[0;1m exec run='<command>'\e[0m - run <command> inside WP container"
+	@echo "- \e[0;1m debug\e[0m - install and run WP in the foreground"
+	@echo "- \e[0;1m config\e[0m - display Docker compose configuration"
+	@echo "- \e[0;1m jsoncontrol\e[0m - display a set of control commands in JSON"
+	@echo "- \e[0;1m lock\e[0m - lock installation for writing"
+	@echo "- \e[0;1m unlock\e[0m - unlock installation for writing"
+	@echo "- \e[0;1m logs\e[0m - display logs"
+	@echo "- \e[0;1m purge\e[0m - delete persistent data ❗️"
+	@echo "- \e[0;1m docs\e[0m - transpile documentation into PDF"
 	@echo ""
 
 docs:
@@ -200,7 +199,7 @@ lock:
 ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
-	@echo "WordPress lock ..."
+	@echo "WP lock ..."
 	@sudo find www/ -type d -print -exec chmod 555 {} \;
 	@sudo find www/ -type f -print -exec chmod 444 {} \;
 
@@ -208,7 +207,7 @@ unlock:
 ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
-	@echo "WordPress unlock ..."
+	@echo "WP unlock ..."
 	@sudo find www/ -type d -print -exec chmod 755 {} \;
 	@sudo find www/ -type f -print -exec chmod 644 {} \;
 
@@ -312,7 +311,7 @@ endif
 ifneq ($(wildcard bak/www.tgz),)
 	@-sudo tar xzf bak/www.tgz 2>/dev/null
 else
-	@echo "❗️ missing WordPress archive"
+	@echo "❗️ missing WP archive"
 	exit 1
 endif
 else
@@ -326,7 +325,7 @@ endif
 ifneq ($(wildcard www.tgz),)
 	@-sudo tar xzf www.tgz 2>/dev/null
 else
-	@echo "❗️ missing WordPress archive"
+	@echo "❗️ missing WP archive"
 	exit 1
 endif
 endif
