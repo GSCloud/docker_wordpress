@@ -1,4 +1,4 @@
-# WP in Docker and MariaDB v1.7 2024-09-28
+# WP in Docker and MariaDB v1.8 2024-11-18
 
 ## WP is an open source web content management system
 
@@ -20,8 +20,6 @@ Run `make`:
 - install - install containers
 - start - start containers
 - stop - stop containers
-- pause - pause containers
-- unpause - unpause containers
 - suspend - suspend site (run a static web instead)
 - unsuspend - unsuspend site
 - test - test containers, force reinstall
@@ -37,7 +35,6 @@ Run `make`:
 - exec run='\<command\>' - run \<command\> inside WP container
 - debug - install and run WP in the foreground
 - config - display Docker compose configuration
-- jsoncontrol - display a set of control commands in JSON
 - lock - lock installation for writing
 - unlock - unlock installation for writing
 - logs - display logs

@@ -1,10 +1,10 @@
 #@author Fred Brooker <git@gscloud.cz>
 include .env
 
-run ?=
 STATIC_IMAGE_BACKUP ?= gscloudcz/backup-static-site:latest
 STATIC_IMAGE_RESTORE ?= gscloudcz/restore-static-site:latest
 STATIC_IMAGE_SUSPEND ?= gscloudcz/suspend-static-site:latest
+run ?=
 has_php != command -v php 2>/dev/null
 db_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_DB_CONTAINER_NAME} 2>/dev/null | grep true
 wp_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_CONTAINER_NAME} 2>/dev/null | grep true
@@ -31,8 +31,9 @@ pmadot=🔴
 endif
 
 all: info
+
 info:
-	@echo "\n\e[1;32mWP in Docker 👾\e[0m v1.7 2024-09-28\n"
+	@echo "\n\e[1;32mWP in Docker 👾\e[0m v1.8 2024-11-18\n"
 	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
@@ -45,11 +46,10 @@ ifneq ($(strip $(INSTALL_EXTRAS)),)
 	@echo "\e[1;33mINSTALL_EXTRAS\e[0m\e[0;33m is set to run after installation.\e[0m"
 endif
 	@echo ""
+
 	@echo "- \e[0;1m install\e[0m - install containers"
 	@echo "- \e[0;1m start\e[0m - start containers"
 	@echo "- \e[0;1m stop\e[0m - stop containers"
-	@echo "- \e[0;1m pause\e[0m - pause containers"
-	@echo "- \e[0;1m unpause\e[0m - unpause containers"
 	@echo "- \e[0;1m suspend\e[0m - suspend site (run a static web instead)"
 	@echo "- \e[0;1m unsuspend\e[0m - unsuspend site"
 	@echo "- \e[0;1m test\e[0m - test containers, force reinstall"
@@ -65,7 +65,6 @@ endif
 	@echo "- \e[0;1m exec run='<command>'\e[0m - run <command> inside WP container"
 	@echo "- \e[0;1m debug\e[0m - install and run WP in the foreground"
 	@echo "- \e[0;1m config\e[0m - display Docker compose configuration"
-	@echo "- \e[0;1m jsoncontrol\e[0m - display a set of control commands in JSON"
 	@echo "- \e[0;1m lock\e[0m - lock installation for writing"
 	@echo "- \e[0;1m unlock\e[0m - unlock installation for writing"
 	@echo "- \e[0;1m logs\e[0m - display logs"
@@ -76,14 +75,6 @@ endif
 docs:
 	@echo "transpiling documentation ..."
 	@bash ./bin/create_pdf.sh
-
-jsoncontrol:
-ifneq ($(strip $(has_php)),)
-	@php -r 'echo json_encode(["control_set" => ["backup", "config", "cronrunall", "cronrundue", "debug", "exec", "fix", "install", "kill", "lock", "logs", "pause", "purge", "remove", "restore", "start", "stop", "suspend", "test", "unlock", "unpause", "unsuspend", "update"]], JSON_PRETTY_PRINT);'
-else
-	@echo "❗️ php parser is not installed"
-	@exit 99
-endif
 
 debug:
 	@docker compose up
@@ -134,14 +125,6 @@ endif
 kill:
 	@echo "😵"
 	@docker compose kill
-
-pause:
-	@echo "⏸️"
-	@docker compose pause
-
-unpause:
-	@echo "▶️"
-	@docker compose unpause
 
 remove:
 	@echo "removing all containers ..."
@@ -356,18 +339,17 @@ ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 endif
 ifneq ($(strip $(wp_status)),)
-	@echo "🟢 WP is up and running or paused"
+	@echo "🟢 WP is up"
 else
 	@echo "🔴 WP is down"
 endif
 ifneq ($(strip $(db_status)),)
-	@echo "🟢 DB is up and running or paused"
+	@echo "🟢 DB is up"
 else
 	@echo "🔴 DB is down"
 endif
 ifneq ($(wpdb_status), $(wpdbok))
-	@-make install
-	@exit 1
+	@exit 255
 else
 	@exit 0
 endif
