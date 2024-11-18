@@ -52,7 +52,7 @@ endif
 	@echo "- \e[0;1m stop\e[0m - stop containers"
 	@echo "- \e[0;1m suspend\e[0m - suspend site (run a static web instead)"
 	@echo "- \e[0;1m unsuspend\e[0m - unsuspend site"
-	@echo "- \e[0;1m test\e[0m - test containers, force reinstall"
+	@echo "- \e[0;1m test\e[0m - test containers"
 	@echo "- \e[0;1m fix\e[0m - fix web container permissions"
 	@echo "- \e[0;1m update\e[0m - update themes and plugins via wp binary"
 	@echo "- \e[0;1m kill\e[0m - kill containers"
