@@ -22,13 +22,13 @@ Run `make`:
 - stop - stop containers
 - suspend - suspend site (run a static web instead)
 - unsuspend - unsuspend site
-- test - test containers, force reinstall
+- test - test containers
 - fix - fix web container permissions
 - update - update themes and plugins via wp binary
 - kill - kill containers
 - remove - remove containers
 - cronrunall - run all cron hooks
-- cronrundue - run all cron hooks due right now
+- cronrundue - run all cron hooks due
 - backup - backup containers
 - restore - restore containers
 - exec - run shell inside WP container
