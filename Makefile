@@ -5,7 +5,6 @@ STATIC_IMAGE_BACKUP ?= gscloudcz/backup-static-site:latest
 STATIC_IMAGE_RESTORE ?= gscloudcz/restore-static-site:latest
 STATIC_IMAGE_SUSPEND ?= gscloudcz/suspend-static-site:latest
 run ?=
-has_php != command -v php 2>/dev/null
 db_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_DB_CONTAINER_NAME} 2>/dev/null | grep true
 wp_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_CONTAINER_NAME} 2>/dev/null | grep true
 pma_status != docker inspect --format '{{json .State.Running}}' ${PMA_CONTAINER_NAME} 2>/dev/null | grep true
@@ -33,7 +32,7 @@ endif
 all: info
 
 info:
-	@echo "\n\e[1;32mWP in Docker 👾\e[0m v1.8 2024-11-18\n"
+	@echo "\n\e[1;32mWP in Docker 👾\e[0m v1.9 2024-11-21\n"
 	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
@@ -61,9 +60,9 @@ endif
 	@echo "- \e[0;1m cronrundue\e[0m - run all cron hooks due right now"
 	@echo "- \e[0;1m backup\e[0m - backup containers"
 	@echo "- \e[0;1m restore\e[0m - restore containers"
-	@echo "- \e[0;1m exec\e[0m - run shell inside WP container"
-	@echo "- \e[0;1m exec run='<command>'\e[0m - run <command> inside WP container"
-	@echo "- \e[0;1m debug\e[0m - install and run WP in the foreground"
+	@echo "- \e[0;1m exec\e[0m - run shell inside container"
+	@echo "- \e[0;1m exec run='<command>'\e[0m - run <command> inside container"
+	@echo "- \e[0;1m debug\e[0m - install and run in the foreground"
 	@echo "- \e[0;1m config\e[0m - display Docker compose configuration"
 	@echo "- \e[0;1m lock\e[0m - lock installation for writing"
 	@echo "- \e[0;1m unlock\e[0m - unlock installation for writing"
@@ -73,7 +72,7 @@ endif
 	@echo ""
 
 docs:
-	@echo "transpiling documentation ..."
+	@echo "Transpiling documentation"
 	@bash ./bin/create_pdf.sh
 
 debug:
@@ -81,7 +80,7 @@ debug:
 
 install: remove
 	@date
-	@echo "installing containers ..."
+	@echo "Installing containers"
 	@docker compose up -d
 ifneq ($(strip $(CMD_EXTRAS)),)
 	@-docker cp ./cmd_extras.sh ${WORDPRESS_CONTAINER_NAME}:/
@@ -89,7 +88,7 @@ ifneq ($(strip $(CMD_EXTRAS)),)
 	@-docker restart ${WORDPRESS_CONTAINER_NAME}
 endif
 ifneq ($(strip $(INSTALL_EXTRAS)),)
-	@echo "sleeping 3 s ..."
+	@echo "sleeping 3 s"
 	@sleep 3
 	@bash ./install_extras.sh
 endif
@@ -101,7 +100,7 @@ endif
 	@echo ""
 
 start:
-	@echo "starting containers ..."
+	@echo "Starting containers"
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 endif
@@ -112,7 +111,7 @@ ifneq ($(strip $(PMA_PORT)),)
 endif
 
 stop:
-	@echo "stopping containers ..."
+	@echo "Stopping containers"
 	@-docker stop ${WORDPRESS_CONTAINER_NAME}
 	@-docker stop ${WORDPRESS_DB_CONTAINER_NAME}
 ifneq ($(strip $(PMA_PORT)),)
@@ -127,7 +126,7 @@ kill:
 	@docker compose kill
 
 remove:
-	@echo "removing all containers ..."
+	@echo "Removing all containers"
 	@docker compose stop
 	@-docker rm ${WORDPRESS_CONTAINER_NAME} --force 2>/dev/null
 	@-docker rm ${WORDPRESS_DB_CONTAINER_NAME} --force 2>/dev/null
@@ -182,7 +181,7 @@ lock:
 ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
-	@echo "WP lock ..."
+	@echo "WP locked"
 	@sudo find www/ -type d -print -exec chmod 555 {} \;
 	@sudo find www/ -type f -print -exec chmod 444 {} \;
 
@@ -190,7 +189,7 @@ unlock:
 ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
-	@echo "WP unlock ..."
+	@echo "WP unlocked"
 	@sudo find www/ -type d -print -exec chmod 755 {} \;
 	@sudo find www/ -type f -print -exec chmod 644 {} \;
 

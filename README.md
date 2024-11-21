@@ -1,14 +1,14 @@
-# WP in Docker and MariaDB v1.8 2024-11-18
+# WP in Docker v1.9 2024-11-21
 
 ## WP is an open source web content management system
 
 Run WP, MariaDB and phpMyAdmin (optional) as Docker containers using only: **Makefile**, **.env** and **docker-compose.yml**.
 
-Alternative docker-compose examples and other demo files enclosed.
+Alternative docker-compose examples and other demo files are enclosed.
 
 ## Extras
 
-- can run `cmd_extras.sh` after the installation inside the WP container (adding extra modules?)
+- can run `cmd_extras.sh` after the installation inside the container (adding extra modules?)
 - can run `install_extras.sh` after the installation outside (starting daemons?)
 - available **temporary static web** (optional) containers during *suspend*, *backup* and *restore* operations (for users or monitoring services)
 - available **wp** binary with **shell completion**, **bash aliases** and some *PHP ini setup*
@@ -31,9 +31,9 @@ Run `make`:
 - cronrundue - run all cron hooks due
 - backup - backup containers
 - restore - restore containers
-- exec - run shell inside WP container
-- exec run='\<command\>' - run \<command\> inside WP container
-- debug - install and run WP in the foreground
+- exec - run shell inside container
+- exec run='\<command\>' - run \<command\> inside container
+- debug - install and run in the foreground
 - config - display Docker compose configuration
 - lock - lock installation for writing
 - unlock - unlock installation for writing
