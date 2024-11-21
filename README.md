@@ -44,10 +44,10 @@ Run `make`:
 ## Examples
 
 - `make purge install` - purge everything and fresh install
-- `make backup test` - make backup and test functionality
+- `make backup test` - make backup and test
 - `make purge restore` - purge everything and restore from backup
-- `make logs` - show logs from the main container
-- `make test` - test containers (reinstall if it failes)
+- `make logs` - show logs
+- `make test` - test containers
 
 ---
 
