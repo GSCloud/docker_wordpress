@@ -72,7 +72,6 @@ endif
 	@echo ""
 
 docs:
-	@echo "Transpiling documentation"
 	@bash ./bin/create_pdf.sh
 
 debug:
@@ -97,7 +96,6 @@ ifneq ($(strip $(PMA_PORT)),)
 	@echo "\e[0;1m📦️ PMA\e[0m: 🚀 http://localhost:${PMA_PORT}"
 endif
 	@date
-	@echo ""
 
 start:
 	@echo "Starting containers"
