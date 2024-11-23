@@ -79,7 +79,7 @@ debug:
 
 install: remove
 	@date
-	@echo "Installing containers"
+	@echo "installing containers"
 	@docker compose up -d
 ifneq ($(strip $(CMD_EXTRAS)),)
 	@-docker cp ./cmd_extras.sh ${WORDPRESS_CONTAINER_NAME}:/
@@ -98,7 +98,7 @@ endif
 	@date
 
 start:
-	@echo "Starting containers"
+	@echo "starting containers"
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
 endif
@@ -109,7 +109,7 @@ ifneq ($(strip $(PMA_PORT)),)
 endif
 
 stop:
-	@echo "Stopping containers"
+	@echo "stopping containers"
 	@-docker stop ${WORDPRESS_CONTAINER_NAME}
 	@-docker stop ${WORDPRESS_DB_CONTAINER_NAME}
 ifneq ($(strip $(PMA_PORT)),)
@@ -124,7 +124,7 @@ kill:
 	@docker compose kill
 
 remove:
-	@echo "Removing all containers"
+	@echo "removing containers"
 	@docker compose stop
 	@-docker rm ${WORDPRESS_CONTAINER_NAME} --force 2>/dev/null
 	@-docker rm ${WORDPRESS_DB_CONTAINER_NAME} --force 2>/dev/null
