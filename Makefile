@@ -32,7 +32,7 @@ endif
 all: info
 
 info:
-	@echo "\n\e[1;32mWP in Docker 👾\e[0m v1.9 2024-11-21\n"
+	@echo "\n\e[1;32mWP in Docker 👾\e[0m v1.10 2024-12-12\n"
 	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
@@ -49,26 +49,26 @@ endif
 	@echo "- \e[0;1m install\e[0m - install containers"
 	@echo "- \e[0;1m start\e[0m - start containers"
 	@echo "- \e[0;1m stop\e[0m - stop containers"
-	@echo "- \e[0;1m suspend\e[0m - suspend site (run a static web instead)"
+	@echo "- \e[0;1m suspend\e[0m - suspend site"
 	@echo "- \e[0;1m unsuspend\e[0m - unsuspend site"
 	@echo "- \e[0;1m test\e[0m - test containers"
 	@echo "- \e[0;1m fix\e[0m - fix web container permissions"
-	@echo "- \e[0;1m update\e[0m - update themes and plugins via wp binary"
+	@echo "- \e[0;1m update\e[0m - update themes and plugins"
 	@echo "- \e[0;1m kill\e[0m - kill containers"
 	@echo "- \e[0;1m remove\e[0m - remove containers"
 	@echo "- \e[0;1m cronrunall\e[0m - run all cron hooks"
-	@echo "- \e[0;1m cronrundue\e[0m - run all cron hooks due right now"
+	@echo "- \e[0;1m cronrundue\e[0m - run all cron hooks due"
 	@echo "- \e[0;1m backup\e[0m - backup containers"
 	@echo "- \e[0;1m restore\e[0m - restore containers"
-	@echo "- \e[0;1m exec\e[0m - run shell inside container"
-	@echo "- \e[0;1m exec run='<command>'\e[0m - run <command> inside container"
+	@echo "- \e[0;1m exec\e[0m - run interactive shell"
+	@echo "- \e[0;1m exec run='<command>'\e[0m - run <command> in shell"
 	@echo "- \e[0;1m debug\e[0m - install and run in the foreground"
-	@echo "- \e[0;1m config\e[0m - display Docker compose configuration"
 	@echo "- \e[0;1m lock\e[0m - lock installation for writing"
 	@echo "- \e[0;1m unlock\e[0m - unlock installation for writing"
+	@echo "- \e[0;1m config\e[0m - display configuration"
 	@echo "- \e[0;1m logs\e[0m - display logs"
 	@echo "- \e[0;1m purge\e[0m - delete persistent data ❗️"
-	@echo "- \e[0;1m docs\e[0m - transpile documentation into PDF"
+	@echo "- \e[0;1m docs\e[0m - transform documentation into PDF"
 	@echo ""
 
 docs:

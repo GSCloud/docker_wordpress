@@ -1,4 +1,4 @@
-# WP in Docker v1.9 2024-11-21
+# WP in Docker v1.10 2024-12-12
 
 ## WP is an open source web content management system
 
@@ -20,26 +20,26 @@ Run `make`:
 - install - install containers
 - start - start containers
 - stop - stop containers
-- suspend - suspend site (run a static web instead)
+- suspend - suspend site
 - unsuspend - unsuspend site
 - test - test containers
 - fix - fix web container permissions
-- update - update themes and plugins via wp binary
+- update - update themes and plugins
 - kill - kill containers
 - remove - remove containers
 - cronrunall - run all cron hooks
 - cronrundue - run all cron hooks due
 - backup - backup containers
 - restore - restore containers
-- exec - run shell inside container
-- exec run='\<command\>' - run \<command\> inside container
+- exec - run interactive shell
+- exec run='\<command\>' - run \<command\> in shell
 - debug - install and run in the foreground
-- config - display Docker compose configuration
 - lock - lock installation for writing
 - unlock - unlock installation for writing
+- config - display configuration
 - logs - display logs
 - purge - delete persistent data ❗️
-- docs - transpile documentation into PDF
+- docs - transform documentation into PDF
 
 ## Examples
 
