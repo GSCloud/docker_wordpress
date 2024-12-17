@@ -32,7 +32,7 @@ endif
 all: info
 
 info:
-	@echo "\n\e[1;32mWP in Docker 👾\e[0m v1.10 2024-12-12\n"
+	@echo "\n\e[1;32mWP in Docker 👾\e[0m v1.11 2024-12-17\n"
 	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
@@ -138,7 +138,7 @@ endif
 suspend: remove
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_static --force 2>/dev/null
-	@echo "⛔️ running suspend site"
+	@echo "running suspend site"
 	@docker run -d --rm -p ${WORDPRESS_PORT}:3000 --name ${WORDPRESS_CONTAINER_NAME}_suspended ${STATIC_IMAGE_SUSPEND}
 else
 	@echo "ℹ️ static sites are disabled in .env"
@@ -146,7 +146,7 @@ endif
 
 unsuspend:
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
-	@echo "⛔️ removing suspend site"
+	@echo "removing suspend site"
 	@-docker rm ${WORDPRESS_CONTAINER_NAME}_suspended --force 2>/dev/null
 	@-make install
 else
@@ -196,18 +196,18 @@ ifneq ($(shell id -u),0)
 	@echo "root permission required"
 endif
 	@sudo rm -f www/.maintenance
-	@-sudo chown -R www-data:www-data www/.htaccess www/*.html www/*.php
-	@-sudo chown -R www-data:www-data www/wp-admin
-	@-sudo chown -R www-data:www-data www/wp-content
-	@-sudo chown -R www-data:www-data www/wp-includes
+	@-sudo chown -R www-data:www-data www/.htaccess www/*.html www/*.php 2>/dev/null
+	@-sudo chown -R www-data:www-data www/wp-admin 2>/dev/null
+	@-sudo chown -R www-data:www-data www/wp-content 2>/dev/null
+	@-sudo chown -R www-data:www-data www/wp-includes 2>/dev/null
 	@-sudo chmod 0775 www/wp-content/uploads 2>/dev/null
 	@echo "content permissions fixed"
 	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp plugin update --all
 	@-docker exec ${WORDPRESS_CONTAINER_NAME} wp theme update --all
-	@-sudo chown -R www-data:www-data www/.htaccess www/*.html www/*.php
-	@-sudo chown -R www-data:www-data www/wp-admin
-	@-sudo chown -R www-data:www-data www/wp-content
-	@-sudo chown -R www-data:www-data www/wp-includes
+	@-sudo chown -R www-data:www-data www/.htaccess www/*.html www/*.php 2>/dev/null
+	@-sudo chown -R www-data:www-data www/wp-admin 2>/dev/null
+	@-sudo chown -R www-data:www-data www/wp-content 2>/dev/null
+	@-sudo chown -R www-data:www-data www/wp-includes 2>/dev/null
 	@-sudo chmod 0775 www/wp-content/uploads 2>/dev/null
 	@sudo rm -f www/.maintenance
 	@echo "content permissions fixed"
@@ -233,7 +233,7 @@ endif
 	@date
 	@rm -rf bak
 	@mkdir bak
-	@echo "exporting database"
+	@echo "exporting DB"
 	@-docker exec ${WORDPRESS_DB_CONTAINER_NAME} mariadb-dump -uroot -p${MYSQL_ROOT_PASSWORD} --all-databases > bak/mariadb.sql
 	@-docker stop ${WORDPRESS_CONTAINER_NAME}
 	@-docker stop ${WORDPRESS_DB_CONTAINER_NAME}
@@ -249,10 +249,10 @@ ifneq ($(shell id -u),0)
 endif
 	@sudo tar czf bak/db.tgz db
 	@sudo tar czf bak/www.tgz www
-	@cp Makefile bak/
 	@cp .env bak/
-	@cp apache/* bak/
+	@cp Makefile bak/
 	@cp docker-compose.yml bak/
+	@cp uploads.ini bak/
 ifneq ($(strip $(CMD_EXTRAS)),)
 	@cp cmd_extras.sh bak/
 endif
@@ -281,11 +281,11 @@ ifneq ($(shell id -u),0)
 endif
 	@sudo rm -rf db www
 ifneq ($(wildcard ./bak/.),)
-	@echo "backup location: bak"
+	@echo "backup location: bak/"
 ifneq ($(wildcard bak/db.tgz),)
 	@-sudo tar xzf bak/db.tgz 2>/dev/null
 else
-	@echo "❗️ missing database archive"
+	@echo "❗️ missing DB archive"
 	exit 1
 endif
 ifneq ($(wildcard bak/www.tgz),)
@@ -294,12 +294,18 @@ else
 	@echo "❗️ missing WP archive"
 	exit 1
 endif
+ifneq ($(strip $(CMD_EXTRAS)),)
+	@cp bak/cmd_extras.sh . 2>/dev/null
+endif
+ifneq ($(strip $(INSTALL_EXTRAS)),)
+	@cp bak/install_extras.sh . 2>/dev/null
+endif
 else
 	@echo "backup location: ."
 ifneq ($(wildcard db.tgz),)
 	@-sudo tar xzf db.tgz 2>/dev/null
 else
-	@echo "❗️ missing database archive"
+	@echo "❗️ missing DB archive"
 	exit 1
 endif
 ifneq ($(wildcard www.tgz),)
@@ -308,12 +314,6 @@ else
 	@echo "❗️ missing WP archive"
 	exit 1
 endif
-endif
-ifneq ($(strip $(CMD_EXTRAS)),)
-	@cp bak/cmd_extras.sh . 2>/dev/null
-endif
-ifneq ($(strip $(INSTALL_EXTRAS)),)
-	@cp bak/install_extras.sh . 2>/dev/null
 endif
 ifneq ($(strip $(ENABLE_STATIC_PAGES)),)
 	@echo "closing static site"

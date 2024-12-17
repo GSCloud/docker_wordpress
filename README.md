@@ -1,4 +1,4 @@
-# WP in Docker v1.10 2024-12-12
+# WP in Docker v1.11 2024-12-17
 
 ## WP is an open source web content management system
 
