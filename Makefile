@@ -93,9 +93,9 @@ ifneq ($(strip $(INSTALL_EXTRAS)),)
 	@sleep 3
 	@bash ./install_extras.sh
 endif
-	@echo "\n\e[0;1m📦️ WP\e[0m: 🚀 http://localhost:${WORDPRESS_PORT}"
+	@echo "\n\e[0;1m📦️ WP\e[0m 🚀 http://localhost:${WORDPRESS_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
-	@echo "\e[0;1m📦️ PMA\e[0m: 🚀 http://localhost:${PMA_PORT}"
+	@echo "\e[0;1m📦️ PMA\e[0m 🚀 http://localhost:${PMA_PORT}"
 endif
 	@date
 
