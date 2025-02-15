@@ -1,5 +1,6 @@
 # Fred Brooker <git@gscloud.cz>
 
+name: ${NAME}
 services:
   wp:
     image: wordpress:latest

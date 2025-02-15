@@ -1,4 +1,4 @@
-# WPD (WordPress in Docker) v1.12 2025-02-10
+# WPD (WordPress in Docker) v1.13 2025-02-15
 
 ## WP is an open source web content management system
 
@@ -15,31 +15,7 @@ Alternative docker-compose examples and other demo files are enclosed.
 
 ## Usage
 
-Run `make`:
-
-- install - install containers
-- start - start containers
-- stop - stop containers
-- suspend - suspend site
-- unsuspend - unsuspend site
-- test - test containers
-- fix - fix web container permissions
-- update - update themes and plugins
-- kill - kill containers
-- remove - remove containers
-- cronrunall - run all cron hooks
-- cronrundue - run all cron hooks due
-- backup - backup containers
-- restore - restore containers
-- exec - run interactive shell
-- exec run='\<command\>' - run \<command\> in shell
-- debug - install and run in the foreground
-- lock - lock installation for writing
-- unlock - unlock installation for writing
-- config - display configuration
-- logs - display logs
-- purge - delete persistent data ❗️
-- docs - transform documentation into PDF
+Run `make` to see the help.
 
 ## Examples
 

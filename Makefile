@@ -4,12 +4,12 @@ include .env
 STATIC_IMAGE_BACKUP ?= gscloudcz/backup-static-site:latest
 STATIC_IMAGE_RESTORE ?= gscloudcz/restore-static-site:latest
 STATIC_IMAGE_SUSPEND ?= gscloudcz/suspend-static-site:latest
-run ?=
 db_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_DB_CONTAINER_NAME} 2>/dev/null | grep true
 wp_status != docker inspect --format '{{json .State.Running}}' ${WORDPRESS_CONTAINER_NAME} 2>/dev/null | grep true
 pma_status != docker inspect --format '{{json .State.Running}}' ${PMA_CONTAINER_NAME} 2>/dev/null | grep true
 wpdb_status := $(wp_status)$(db_status)
 wpdbok = truetrue
+run ?=
 
 ifneq ($(strip $(wp_status)),)
 wpdot=🟢
@@ -29,46 +29,67 @@ else
 pmadot=🔴
 endif
 
-all: info
+# color definitions
+ifeq ($(NO_COLOR),1)
+	BOLD :=
+	DIM :=
+	RESET :=
+	GREEN :=
+	RED :=
+	YELLOW :=
+	BLUE :=
+else
+	BOLD := $(shell tput bold)
+	DIM := $(shell tput dim)
+	RESET := $(shell tput sgr0)
+	GREEN := $(shell tput setaf 2)
+	RED := $(shell tput setaf 1)
+	YELLOW := $(shell tput setaf 3)
+	BLUE := $(shell tput setaf 4)
+endif
 
+all: info
 info:
-	@echo "\n\e[1;32mWPD 👾\e[0m v1.12 2025-02-10\n"
-	@echo "\e[0;1m📦️ WP\e[0m \t$(wpdot) \e[0;4m${WORDPRESS_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
-	@echo "\e[0;1m📦️ DB\e[0m \t$(dbdot) \e[0;4m${WORDPRESS_DB_CONTAINER_NAME}\e[0m \tport: ${WORDPRESS_DB_PORT}"
+ifeq ($(strip $(NAME)),)
+	@echo "${RED}Please add ${BOLD}NAME${RESET}${RED} to your ${BOLD}.env${RESET}${RED} file!${RESET}"
+	@exit 1
+endif
+	@echo "\n\e[1;32mWPD: ${NAME} 👾${RESET} v1.13 2025-02-15\n"
+	@echo "${BOLD}📦️ WP${RESET} \t$(wpdot) ${BOLD}${WORDPRESS_CONTAINER_NAME}${RESET} \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
+	@echo "${BOLD}📦️ DB${RESET} \t$(dbdot) ${BOLD}${WORDPRESS_DB_CONTAINER_NAME}${RESET} \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
-	@echo "\e[0;1m📦️ PMA\e[0m \t$(pmadot) \e[0;4m${PMA_CONTAINER_NAME}\e[0m \tport: ${PMA_PORT} \t🚀 http://localhost:${PMA_PORT}"
+	@echo "${BOLD}📦️ PMA${RESET} \t$(pmadot) ${BOLD}${PMA_CONTAINER_NAME}${RESET} \tport: ${PMA_PORT} \t🚀 http://localhost:${PMA_PORT}"
 endif
 ifneq ($(strip $(CMD_EXTRAS)),)
-	@echo "\e[1;33mCMD_EXTRAS\e[0m\e[0;33m is set to run after installation.\e[0m"
+	@echo "${BLUE}${BOLD}CMD_EXTRAS${RESET}${BLUE} is set to run after installation.${RESET}"
 endif
 ifneq ($(strip $(INSTALL_EXTRAS)),)
-	@echo "\e[1;33mINSTALL_EXTRAS\e[0m\e[0;33m is set to run after installation.\e[0m"
+	@echo "${BLUE}${BOLD}INSTALL_EXTRAS${RESET}${BLUE} is set to run after installation.${RESET}"
 endif
 	@echo ""
 
-	@echo "- \e[0;1m install\e[0m - install containers"
-	@echo "- \e[0;1m start\e[0m - start containers"
-	@echo "- \e[0;1m stop\e[0m - stop containers"
-	@echo "- \e[0;1m suspend\e[0m - suspend site"
-	@echo "- \e[0;1m unsuspend\e[0m - unsuspend site"
-	@echo "- \e[0;1m test\e[0m - test containers"
-	@echo "- \e[0;1m fix\e[0m - fix web container permissions"
-	@echo "- \e[0;1m update\e[0m - update themes and plugins"
-	@echo "- \e[0;1m kill\e[0m - kill containers"
-	@echo "- \e[0;1m remove\e[0m - remove containers"
-	@echo "- \e[0;1m cronrunall\e[0m - run all cron hooks"
-	@echo "- \e[0;1m cronrundue\e[0m - run all cron hooks due"
-	@echo "- \e[0;1m backup\e[0m - backup containers"
-	@echo "- \e[0;1m restore\e[0m - restore containers"
-	@echo "- \e[0;1m exec\e[0m - run interactive shell"
-	@echo "- \e[0;1m exec run='<command>'\e[0m - run <command> in shell"
-	@echo "- \e[0;1m debug\e[0m - install and run in the foreground"
-	@echo "- \e[0;1m lock\e[0m - lock installation for writing"
-	@echo "- \e[0;1m unlock\e[0m - unlock installation for writing"
-	@echo "- \e[0;1m config\e[0m - display configuration"
-	@echo "- \e[0;1m logs\e[0m - display logs"
-	@echo "- \e[0;1m purge\e[0m - delete persistent data ❗️"
-	@echo "- \e[0;1m docs\e[0m - transform documentation into PDF"
+	@echo "${BOLD}install${RESET}\t\t- install containers"
+	@echo "${BOLD}debug${RESET}\t\t- install and run in the foreground"
+	@echo "${BOLD}start${RESET}\t\t- start containers"
+	@echo "${BOLD}stop${RESET}\t\t- stop containers"
+	@echo "${BOLD}kill${RESET}\t\t- kill containers"
+	@echo "${BOLD}remove${RESET}\t\t- remove containers"
+	@echo "${BOLD}fix${RESET}\t\t- fix web container permissions"
+	@echo "${BOLD}update${RESET}\t\t- update themes and plugins"
+	@echo "${BOLD}test${RESET}\t\t- test containers"
+	@echo "${BOLD}config${RESET}\t\t- display configuration"
+	@echo "${BOLD}suspend${RESET}\t\t- suspend site"
+	@echo "${BOLD}unsuspend${RESET}\t- unsuspend site"
+	@echo "${BOLD}cronrunall${RESET}\t- run all cron hooks"
+	@echo "${BOLD}cronrundue${RESET}\t- run all cron hooks due"
+	@echo "${BOLD}backup${RESET}\t\t- backup containers"
+	@echo "${BOLD}restore${RESET}\t\t- restore containers"
+	@echo "${BOLD}lock${RESET}\t\t- lock installation for writing"
+	@echo "${BOLD}unlock${RESET}\t\t- unlock installation for writing"
+	@echo "${BOLD}exec${RESET}\t\t- run interactive shell, ${BOLD}exec run='<command>'${RESET} - run <command> in the shell"
+	@echo "${BOLD}logs${RESET}\t\t- display logs"
+	@echo "${BOLD}purge${RESET}\t\t- delete persistent data ❗️"
+	@echo "${BOLD}docs${RESET}\t\t- convert documentation into PDF"
 	@echo ""
 
 docs:
@@ -77,12 +98,12 @@ docs:
 	@find . -maxdepth 1 -iname "*.adoc" -delete
 
 debug:
-	@docker compose up
+	@docker compose -p ${NAME} up
 
 install: remove
 	@date
 	@echo "installing containers"
-	@docker compose up -d
+	@docker compose -p ${NAME} up -d
 ifneq ($(strip $(CMD_EXTRAS)),)
 	@-docker cp ./cmd_extras.sh ${WORDPRESS_CONTAINER_NAME}:/
 	@-docker exec ${WORDPRESS_CONTAINER_NAME} /cmd_extras.sh
@@ -93,9 +114,9 @@ ifneq ($(strip $(INSTALL_EXTRAS)),)
 	@sleep 3
 	@bash ./install_extras.sh
 endif
-	@echo "\n\e[0;1m📦️ WP\e[0m 🚀 http://localhost:${WORDPRESS_PORT}"
+	@echo "\n${BOLD}📦️ WP${RESET} 🚀 http://localhost:${WORDPRESS_PORT}"
 ifneq ($(strip $(PMA_PORT)),)
-	@echo "\e[0;1m📦️ PMA\e[0m 🚀 http://localhost:${PMA_PORT}"
+	@echo "${BOLD}📦️ PMA${RESET} 🚀 http://localhost:${PMA_PORT}"
 endif
 	@date
 
@@ -123,11 +144,11 @@ endif
 
 kill:
 	@echo "😵"
-	@docker compose kill
+	@docker compose -p ${NAME} kill
 
 remove:
 	@echo "removing containers"
-	@docker compose stop
+	@docker compose -p ${NAME} stop
 	@-docker rm ${WORDPRESS_CONTAINER_NAME} --force 2>/dev/null
 	@-docker rm ${WORDPRESS_DB_CONTAINER_NAME} --force 2>/dev/null
 ifneq ($(strip $(PMA_PORT)),)
@@ -156,7 +177,7 @@ else
 endif
 
 config:
-	@docker compose config
+	@docker compose -p ${NAME} config
 
 exec:
 ifneq ($(strip $(run)),)
