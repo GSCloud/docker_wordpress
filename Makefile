@@ -55,7 +55,7 @@ endif
 
 all: info
 info:
-	@echo "\n\e[1;32mWPD: ${NAME} 👾${RESET} v1.13 2025-02-15\n"
+	@echo "\n\e[1;32mWPD: ${NAME} 👾${RESET} v1.14 2025-02-18\n"
 	@echo "${BOLD}📦️ WP${RESET} \t$(wpdot) ${BOLD}${WORDPRESS_CONTAINER_NAME}${RESET} \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "${BOLD}📦️ DB${RESET} \t$(dbdot) ${BOLD}${WORDPRESS_DB_CONTAINER_NAME}${RESET} \tport: ${WORDPRESS_DB_PORT}"
 ifneq ($(strip $(PMA_PORT)),)

@@ -1,6 +1,8 @@
-# WPD (WordPress in Docker) v1.13 2025-02-15
+# WPD (WordPress in Docker) v1.14 2025-02-18
 
 ## WP is an open source web content management system
+
+Demo: [https://wpd.gscloud.cz](wpd.gscloud.cz)
 
 Run WP, MariaDB and phpMyAdmin (optional) as Docker containers using only: **Makefile**, **.env** and **docker-compose.yml**.
 
