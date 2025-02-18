@@ -62,9 +62,12 @@ ifneq ($(strip $(PMA_PORT)),)
 	@echo "${BOLD}📦️ PMA${RESET} \t$(pmadot) ${BOLD}${PMA_CONTAINER_NAME}${RESET} \tport: ${PMA_PORT} \t🚀 http://localhost:${PMA_PORT}"
 endif
 ifneq ($(strip $(CMD_EXTRAS)),)
-	@echo "${BLUE}${BOLD}CMD_EXTRAS${RESET}${BLUE} is set to run after installation.${RESET}"
+	@echo "\n${BLUE}${BOLD}CMD_EXTRAS${RESET}${BLUE} is set to run after installation.${RESET}"
 endif
 ifneq ($(strip $(INSTALL_EXTRAS)),)
+ifeq ($(strip $(CMD_EXTRAS)),)
+	@echo "\n"
+endif
 	@echo "${BLUE}${BOLD}INSTALL_EXTRAS${RESET}${BLUE} is set to run after installation.${RESET}"
 endif
 	@echo ""
