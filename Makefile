@@ -48,12 +48,12 @@ else
 	BLUE := $(shell tput setaf 4)
 endif
 
+ifeq ($(strip $(NAME)),)
+	NAME := $(notdir $(shell pwd))
+endif
+
 all: info
 info:
-ifeq ($(strip $(NAME)),)
-	@echo "${RED}Please add ${BOLD}NAME${RESET}${RED} to your ${BOLD}.env${RESET}${RED} file!${RESET}"
-	@exit 1
-endif
 	@echo "\n\e[1;32mWPD: ${NAME} 👾${RESET} v1.13 2025-02-15\n"
 	@echo "${BOLD}📦️ WP${RESET} \t$(wpdot) ${BOLD}${WORDPRESS_CONTAINER_NAME}${RESET} \tport: ${WORDPRESS_PORT} \t🚀 http://localhost:${WORDPRESS_PORT}"
 	@echo "${BOLD}📦️ DB${RESET} \t$(dbdot) ${BOLD}${WORDPRESS_DB_CONTAINER_NAME}${RESET} \tport: ${WORDPRESS_DB_PORT}"
