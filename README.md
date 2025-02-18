@@ -2,7 +2,7 @@
 
 ## WP is an open source web content management system
 
-Demo: [https://wpd.gscloud.cz](wpd.gscloud.cz)
+Demo: [https://wpd.gscloud.cz](https://wpd.gscloud.cz)
 
 Run WP, MariaDB and phpMyAdmin (optional) as Docker containers using only: **Makefile**, **.env** and **docker-compose.yml**.
 
