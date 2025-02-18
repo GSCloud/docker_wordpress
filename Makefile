@@ -50,6 +50,7 @@ endif
 
 ifeq ($(strip $(NAME)),)
 	NAME := $(notdir $(shell pwd))
+	export NAME
 endif
 
 all: info
