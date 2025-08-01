@@ -2,7 +2,7 @@
 name: ${NAME}
 services:
   wp:
-    image: wordpress:latest
+    image: wordpress:php8.4
     container_name: ${WORDPRESS_CONTAINER_NAME}
     depends_on:
       - db
@@ -27,7 +27,7 @@ services:
           define('DISALLOW_FILE_EDIT', true);
           define('FORCE_SSL_ADMIN', false);
           define('XMLRPC_ENABLED', false);
-          define('WP_MEMORY_LIMIT', '128M');
+          define('WP_MEMORY_LIMIT', '256M');
   db:
     image: mariadb:latest
     container_name: ${WORDPRESS_DB_CONTAINER_NAME}

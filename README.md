@@ -1,4 +1,4 @@
-# WPD (WordPress in Docker) v1.14 2025-02-18
+# WPD (WordPress in Docker) v1.15 2025-08-01
 
 ## WP is an open source web content management system
 

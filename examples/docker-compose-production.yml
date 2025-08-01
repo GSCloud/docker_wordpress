@@ -2,7 +2,7 @@
 name: ${NAME}
 services:
   wp:
-    image: wordpress:latest
+    image: wordpress:php8.4
     container_name: ${WORDPRESS_CONTAINER_NAME}
     depends_on:
       - db
